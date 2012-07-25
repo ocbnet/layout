@@ -71,7 +71,7 @@
 	if (!clearDefered) clearDefered = window.clearTimeout;
 
 
-	// static global function
+	// static local function
 	// call function on all widgets
 	function exec(fn, data)
 	{
@@ -93,7 +93,7 @@
 	// EO exec
 
 
-	// static global function
+	// static local function
 	// call layout hooks on all widgets
 	function layout (data)
 	{
@@ -229,7 +229,7 @@
 		widgets = widgets.add(jQuery(widget))
 
 		// make static array a global
-		Manager.widgets = widgets;
+		// Manager.widgets = widgets;
 
 	};
 	// EO Manager.add
@@ -250,7 +250,7 @@
 		if (widgets.length == 0) jQuery(window).bind('resize', resizer);
 
 		// make static array a global
-		Manager.widgets = widgets;
+		// Manager.widgets = widgets;
 
 	};
 	// EO Manager.del
