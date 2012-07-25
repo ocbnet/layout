@@ -63,8 +63,9 @@ elements.
 
 <pre>OCBNET.Layout(force)</pre>
 
-Main function to layout all widgets. Take an optional force argument which is passed to each layout method.
-Always call this function when the widget dimensions changed by some event other than resize.
+Main function to layout all widgets. Takes an optional force argument which is passed to each
+layout method (as data.force). Always call this function when the widget dimensions changed by
+some event other than resize.
 
 <pre>OCBNET.Layout.add(widget)</pre>
 
@@ -77,7 +78,7 @@ Remove the widget from the Layout Manager (widget must be same object as on add)
 <pre>OCBNET.Layout.schedule(delay, reset)</pre>
 
 Schedule a delayed layout run in X miliseconds. Optional argument to reset already scheduled update.
-If you reset the scheduler to fast you may not get an layout update in a long time. Uses
+If you reset the scheduler to fast you may not get a layout update in a long time. Uses
 RequestAnimationFrame if available to redo the layout.
 
 ### Widget methods
