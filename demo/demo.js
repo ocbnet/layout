@@ -20,12 +20,11 @@ function toggle()
 function animate()
 {
 
-	jQuery('DIV.wrapper')
-		.stop(true, false)
-
 	function start ()
 	{
+
 		jQuery('DIV.wrapper')
+		.stop(false, false)
 		.animate({
 			'margin-left': '100px',
 			'margin-right': '100px'
@@ -43,6 +42,7 @@ function animate()
 	function stop ()
 	{
 		jQuery('DIV.wrapper')
+		.stop(false, false)
 		.animate({
 			'margin-left': '200px',
 			'margin-right': '200px'
