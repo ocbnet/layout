@@ -1,0 +1,56 @@
+BODY, HTML
+{
+	margin: 0px;
+	padding: 0px;
+	text-align: center;
+}
+
+HTML
+{
+	margin: 0px;
+	padding: 0px;
+	background-color: #0000FF;
+}
+
+BODY
+{
+	background-color: #00FF00;
+}
+
+DIV.wrapper
+{
+	width: auto;
+	margin: 0 200px;
+	background-color: red;
+}
+
+DIV.widget
+{
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	background: yellow;
+}
+
+DIV.image
+{
+	/* hide first */
+	display: none;
+}
+
+DIV.image IMG
+{
+	/* keep aspect ratio */
+	width: 100%;
+	height: auto;
+	display: block;
+	/* fix crappy IE image scaling */
+	-ms-interpolation-mode: bicubic;
+}
+
+#toolbar
+{
+	padding: 10px 0;
+	font-size: 14px;
+	font-family: verdana;
+}

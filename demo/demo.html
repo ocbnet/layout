@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<title>OCBNET JS Layout Manager Demo Page</title>
+
+		<link rel="stylesheet" href="demo.css">
+
+		<script src="http://code.jquery.com/jquery.min.js"></script>
+		<script src="../layout-1.0.0.src.js"></script>
+		<script src="demo.js"></script>
+
+		<script>
+
+			// create pseudo fixed aspect ratio widget
+			// attach some methods to set height by width
+			function Widget(el)
+			{
+
+				// just store the node
+				this.el = jQuery(el);
+
+			}
+
+			// define method called by function
+			Widget.prototype.preLayout = function()
+			{
+
+				// fetch the viewport width first
+				this.vp_x = this.el.innerWidth()
+
+			}
+
+			// define method called by function
+			Widget.prototype.updateLayout = function(force)
+			{
+
+				// then adjust the height to the width
+				this.el.height(this.vp_x);
+
+			}
+
+			// wait for dom
+			jQuery(function()
+			{
+
+				// find all widgets to initialize
+				jQuery('DIV.widget').each(function()
+				{
+
+					// create new widget instance
+					var widget = new Widget(this);
+
+					// add widget to layouter
+					OCBNET.Layout.add(widget);
+
+				})
+
+				// re-layout
+				OCBNET.Layout();
+
+			});
+
+		</script>
+
+	</head>
+
+	<body>
+
+		<!-- wrapper with two widgets -->
+		<div id="toolbar">
+			<a href="javascript:void(animate());">Animate wrapper outer dimension</a><br/>
+			<a href="javascript:void(toggle());">Toggle between native images and controlled widgets</a><br/>
+		</div>
+
+		<!-- ruler -->
+		<hr>
+
+		<!-- wrapper with two widgets -->
+		<!-- only show one at a time -->
+		<div class="wrapper">
+
+			<!-- widget with aspect ratio -->
+			<div class="widget"></div>
+
+			<!-- image with aspect ratio -->
+			<div class="image"><img src="pattern.gif" alt="" /></div>
+
+		</div>
+
+		<!-- ruler -->
+		<hr>
+
+		<!-- wrapper with two widgets -->
+		<!-- only show one at a time -->
+		<div class="wrapper">
+
+			<!-- widget with aspect ratio -->
+			<div class="widget"></div>
+
+			<!-- image with aspect ratio -->
+			<div class="image"><img src="pattern.gif" alt="" /></div>
+
+		</div>
+
+	</body>
+
+</html>
