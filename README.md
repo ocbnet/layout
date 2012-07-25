@@ -93,11 +93,14 @@ Read and store the values needed to redo the layout (do not adjust browser eleme
 
 <pre>{ 'updateLayout' : function (data) { if (data.force) {} } }</pre>
 
-Use stored values to redo the layout (do not measure any browser elements).
+Use stored values to redo the layout (do not measure any browser elements). In this step
+you may only adjust the viewport that will influence the outside page.
 
 <pre>{ 'postLayout' : function (data) { if (data.force) {} } }</pre>
 
-Optional step to do some tidy up after all widgets are updated.
+Do adjustements that will not alter the outside dimensions of the widget here. The other
+events are called up to three times per layout run. This callback will only be executed
+once after the Layout Manager has decided how to layout the widgets.
 
 
 ### Demos
