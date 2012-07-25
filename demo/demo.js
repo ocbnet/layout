@@ -1,7 +1,7 @@
 
 // @@@ toggle @@@
 // toggle widget/image
-OCBNET.Layout toggle()
+function toggle()
 {
 
 	// toggle image/widget
@@ -17,13 +17,13 @@ OCBNET.Layout toggle()
 
 // @@@ animate @@@
 // aniamte viewport
-OCBNET.Layout animate()
+function animate()
 {
 
 	jQuery('DIV.wrapper')
 		.stop(true, false)
 
-	OCBNET.Layout start ()
+	function start ()
 	{
 		jQuery('DIV.wrapper')
 		.animate({
@@ -31,7 +31,7 @@ OCBNET.Layout animate()
 			'margin-right': '100px'
 		}, {
 			duration: 2000,
-			complete: OCBNET.Layout()
+			complete: function ()
 			{
 				OCBNET.Layout();
 				stop();
@@ -40,7 +40,7 @@ OCBNET.Layout animate()
 		});
 	}
 
-	OCBNET.Layout stop ()
+	function stop ()
 	{
 		jQuery('DIV.wrapper')
 		.animate({
@@ -48,7 +48,7 @@ OCBNET.Layout animate()
 			'margin-right': '200px'
 		}, {
 			duration: 2000,
-			complete: OCBNET.Layout()
+			complete: function ()
 			{
 				OCBNET.Layout();
 				start();

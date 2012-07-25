@@ -18,14 +18,10 @@
 
 */
 
-// make sure our global namespace exists
-// but do not reset it if already present
-if (typeof OCBNET == 'undefined') var OCBNET = {};
-
 /* @@@@@@@@@@ STATIC CLASS @@@@@@@@@@ */
 
 // create private scope
-(function()
+(function (jQuery)
 {
 
 	// jquery win and body object
@@ -112,7 +108,7 @@ if (typeof OCBNET == 'undefined') var OCBNET = {};
 
 	// static global function
 	// do the layout on all widgets
-	OCBNET.Layout = function (force)
+	function Manager (force)
 	{
 
 		// shared data (assign flag)
@@ -179,14 +175,14 @@ if (typeof OCBNET == 'undefined') var OCBNET = {};
 		// EO if 1st changed
 
 	};
-	// EO OCBNET.Layout
+	// EO Manager
 
 
 	// static global function
 	// schedule a layout call in delay ms
 	// normally we keep the current waiting timeout
 	// set reset if you want to reschedule the repaint
-	OCBNET.Layout.schedule = function (delay, reset)
+	Manager.schedule = function (delay, reset)
 	{
 
 		// do not re-schedule, execute the first timeout.
@@ -202,7 +198,7 @@ if (typeof OCBNET == 'undefined') var OCBNET = {};
 		{
 
 			// call layout
-			OCBNET.Layout();
+			Manager();
 
 			// reset timer status
 			// we are ready for more
@@ -211,12 +207,12 @@ if (typeof OCBNET == 'undefined') var OCBNET = {};
 		}, delay || 0);
 
 	}
-	// EO OCBNET.Layout.schedule
+	// EO Manager.schedule
 
 
 	// static global function
 	// add a widget under our control
-	OCBNET.Layout.add = function (widget)
+	Manager.add = function (widget)
 	{
 
 		// assign the body object only once
@@ -233,15 +229,15 @@ if (typeof OCBNET == 'undefined') var OCBNET = {};
 		widgets = widgets.add(jQuery(widget))
 
 		// make static array a global
-		OCBNET.Layout.widgets = widgets;
+		Manager.widgets = widgets;
 
 	};
-	// EO OCBNET.Layout.add
+	// EO Manager.add
 
 
 	// static global function
 	// add a widget under our control
-	OCBNET.Layout.del = function (widget)
+	Manager.del = function (widget)
 	{
 
 		// jQueryfy input argument
@@ -254,14 +250,14 @@ if (typeof OCBNET == 'undefined') var OCBNET = {};
 		if (widgets.length == 0) jQuery(window).bind('resize', resizer);
 
 		// make static array a global
-		OCBNET.Layout.widgets = widgets;
+		Manager.widgets = widgets;
 
 	};
-	// EO OCBNET.Layout.del
+	// EO Manager.del
 
 
 	// make static array a global
-	OCBNET.Layout.widgets = widgets;
+	// Manager.widgets = widgets;
 
 
 	// Maybe we should defer the resize event.
@@ -288,7 +284,7 @@ if (typeof OCBNET == 'undefined') var OCBNET = {};
 		{
 
 			// call layouter
-			OCBNET.Layout();
+			Manager();
 
 			// reset the lock
 			resizing = false;
@@ -303,8 +299,18 @@ if (typeof OCBNET == 'undefined') var OCBNET = {};
 	// Set this on initialization as the decision is always
 	// based on information that must not change during runtime.
 	// Will be bound to resize event when first widget is added.
-	var resizer = resize_defer ? deferer : function() { OCBNET.Layout() };
+	var resizer = resize_defer ? deferer : Manager;
 
 
-}).call(OCBNET.Layout);
+	// make sure our global namespace exists
+	// but do not reset it if already present
+	if (typeof OCBNET == 'undefined') OCBNET = {};
+
+	// assign class to global namespace
+	OCBNET.Layout = Manager;
+
+
+})(jQuery);
 // EO private scope
+
+

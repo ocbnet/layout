@@ -26,29 +26,29 @@
 			}
 
 			// define method called by function
-			Widget.prototype.preLayout = function()
+			Widget.prototype.preLayout = function (data)
 			{
 
 				// fetch the viewport width first
-				this.vp_x = this.el.innerWidth()
+				data.vp_x = this.el.innerWidth()
 
 			}
 
 			// define method called by function
-			Widget.prototype.updateLayout = function(force)
+			Widget.prototype.updateLayout = function (data)
 			{
 
 				// then adjust the height to the width
-				this.el.height(this.vp_x);
+				this.el.height(data.vp_x);
 
 			}
 
 			// wait for dom
-			jQuery(function()
+			jQuery(function ()
 			{
 
 				// find all widgets to initialize
-				jQuery('DIV.widget').each(function()
+				jQuery('DIV.widget').each(function ()
 				{
 
 					// create new widget instance
