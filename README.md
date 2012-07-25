@@ -106,5 +106,6 @@ Resize the browser window until the content will overflow and see what happens!
 
  - http://www.ocbnet.ch/github/layout/demo/demo.html
  - http://www.ocbnet.ch/github/layout/demo/broken.html
+ - http://www.ocbnet.ch/github/layout/demo/fullscreen.html
 
 Note: IE9 shows a bug with the fluid images in the demo.

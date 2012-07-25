@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<title>OCBNET JS Layout Manager Demo Page</title>
+
+		<script src="http://code.jquery.com/jquery.min.js"></script>
+		<script src="../layout-1.0.0.src.js"></script>
+
+		<style>
+
+			HTML, BODY,
+			#fullscreen
+			{
+				margin: 0px;
+				padding: 0px;
+			}
+
+			IMG
+			{
+				margin: auto;
+				display: block;
+			}
+
+		</style>
+
+		<script>
+
+			// create fixed aspect ration widget
+			// image should fill the viewport but
+			// must always show in its aspect ratio
+			function Widget(image)
+			{
+
+				// just store the nodes
+				this.win = jQuery(self);
+				this.image = jQuery(image);
+				// get the original dimensions
+				this.width = image.width();
+				this.height = image.height();
+				// calculate the original aspect ratio
+				this.ratio = this.width / this.height;
+
+			}
+
+			// define method called by function
+			Widget.prototype.preLayout = function (data)
+			{
+
+				data.w = this.win.innerWidth();
+				data.h = this.win.innerHeight()
+
+			}
+
+			// define method called by function
+			Widget.prototype.updateLayout = function (data)
+			{
+
+				// calculate values by ratio
+				var w = data.h * this.ratio;
+				var h = data.w / this.ratio;
+
+				// keep values inside viewport
+				if (h > data.h) { h = data.h; }
+				if (w > data.w) { w = data.w; }
+
+				// set image to new dimension
+				this.image.width(w);
+				this.image.height(h);
+
+				// calculate offset to center
+				var off_h = (data.h - h) / 2;
+				var off_w = (data.w - w) / 2;
+
+				// set margins to fill viewport
+				// only do this for debug purpose
+				this.image.css({
+					marginTop : off_h + 'px',
+					marginLef : off_w + 'px',
+					marginRight : off_w + 'px',
+					marginBottom : off_h + 'px'
+				});
+
+			}
+
+			// wait for dom
+			jQuery(window).load(function ()
+			{
+
+				// get the image the scale to fullscreen
+				var image = jQuery('#fullscreen IMG');
+
+				// create new widget instance
+				var widget = new Widget(image);
+
+				// add widget to layouter
+				OCBNET.Layout.add(widget);
+
+				// re-layout
+				OCBNET.Layout();
+
+			});
+
+		</script>
+
+	</head>
+
+	<body>
+
+		<div id="fullscreen">
+			<img src="fullscreen.jpg" />
+		</div>
+
+	</body>
+
+</html>
