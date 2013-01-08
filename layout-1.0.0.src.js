@@ -46,7 +46,7 @@
 	// this is a bugfix for ie 8 where the resize event may is
 	// triggered multiple times when scrollbars appear/disappear
 	var vsync = ! jQuery.browser.msie ||
-		parseInt(jQuery.browser.version, 10) != 8;
+	    parseInt(jQuery.browser.version, 10) != 8;
 
 	// get firefox mode on startup / initialization
 	// firefox will show both scrollbars when the layout
@@ -268,7 +268,7 @@
 		widgets = widgets.not(widget)
 
 		// remove the resize handler when there are no widgets left
-		if (widgets.length == 0) jQuery(window).bind('resize', resizer);
+		if (widgets.length == 0) jQuery(window).unbind('resize', resizer);
 
 		// make static array a global
 		// Manager.widgets = widgets;
