@@ -194,7 +194,7 @@
 		}
 
 		// reassign the resizer function
-		resizer = vsync ? Manager : deferer;
+		resizer = vsync ? function () { Manager(); } : deferer;
 
 	};
 	// EO config
@@ -320,7 +320,7 @@
 	// Set this on initialization as the decision is always
 	// based on information that must not change during runtime.
 	// Will be bound to resize event when first widget is added.
-	var resizer = vsync ? Manager : deferer;
+	var resizer = vsync ? function () { Manager(); } : deferer;
 
 
 	// make sure our global namespace exists
