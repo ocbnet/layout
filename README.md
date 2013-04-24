@@ -87,16 +87,16 @@ A widget must be an object and should define a function on the reserved keyword 
 We pass a data object to all functions with each layout run for you to store your data there.
 The force flag will also be present on this data object (data.force).
 
-<pre>{ 'preLayout' : function (data) { if (data.force) {} } }</pre>
+<pre>{ 'preLayout' : function (data) { var widget = this; if (data.force) {} } }</pre>
 
 Read and store the values needed to redo the layout (do not adjust browser elements).
 
-<pre>{ 'updateLayout' : function (data) { if (data.force) {} } }</pre>
+<pre>{ 'updateLayout' : function (data) { var widget = this; if (data.force) {} } }</pre>
 
 Use stored values to redo the layout (do not measure any browser elements). In this step
 you may only adjust the viewport that will influence the outside page.
 
-<pre>{ 'postLayout' : function (data) { if (data.force) {} } }</pre>
+<pre>{ 'postLayout' : function (data) { var widget = this; if (data.force) {} } }</pre>
 
 Do adjustements that will not alter the outside dimensions of the widget here. The other
 events are called up to three times per layout run. This callback will only be executed
