@@ -9,7 +9,7 @@ layout callbacks for each registered widget.
 
 Handling the layout by yourself is easy, you may say. The most common approach is to bind the
 resize event for every instance you create. When the event fires you measure the available width and
-would resize the widget accordingly. This will works in most situations, but has a very ugly race
+would resize the widget accordingly. This will work in most situations, but has a very ugly race
 condition when the browser decides to add a scrollbar after you laid out your widget. You can see
 this behaviour in the "broken" demo page.
 
