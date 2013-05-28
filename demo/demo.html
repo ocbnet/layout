@@ -23,6 +23,9 @@
 				// just store the node
 				this.el = jQuery(el);
 
+				// create position anchor
+				this.el.css('position', 'relative');
+
 			}
 
 			// define method called by function
@@ -38,8 +41,36 @@
 			Widget.prototype.updateLayout = function (data)
 			{
 
+				// link height to width
+				data.vp_y = data.vp_x;
+
 				// then adjust the height to the width
-				this.el.height(data.vp_x);
+				this.el.height(data.vp_y);
+
+			}
+
+			// define method called by function
+			Widget.prototype.postLayout = function (data)
+			{
+
+				// put some debug text on the screen
+				var txt = data.vp_x + ' x ' + data.vp_y;
+				
+				// create new content within the widget
+				this.el.html('<span>' + txt + '</span>');
+				
+				// get the new created dom node ...
+				var container = this.el.find('span'),
+					// ... and get it's dimension
+				    width = container.outerWidth(),
+				    height = container.outerHeight();
+					
+				// center the container
+				container.css({
+					'position' : 'absolute',
+					'left' : parseInt(data.vp_x / 2 - width / 2),
+					'top' : parseInt(data.vp_y / 2 - height / 2)
+				});
 
 			}
 
