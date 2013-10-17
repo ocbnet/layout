@@ -38,7 +38,7 @@
 			}
 
 			// define method called by function
-			Widget.prototype.updateLayout = function (data)
+			Widget.prototype.postLayout = function (data)
 			{
 
 				// link height to width
@@ -50,21 +50,21 @@
 			}
 
 			// define method called by function
-			Widget.prototype.postLayout = function (data)
+			Widget.prototype.updateLayout = function (data)
 			{
 
 				// put some debug text on the screen
 				var txt = data.vp_x + ' x ' + data.vp_y;
-				
+
 				// create new content within the widget
 				this.el.html('<span>' + txt + '</span>');
-				
+
 				// get the new created dom node ...
 				var container = this.el.find('span'),
 				    // ... and get its dimension
 				    width = container.outerWidth(),
 				    height = container.outerHeight();
-					
+
 				// center the container
 				container.css({
 					'position' : 'absolute',

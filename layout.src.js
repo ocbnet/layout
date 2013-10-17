@@ -36,6 +36,9 @@
 	// store scheduled timeout
 	var scheduled;
 
+	// widgets without parent
+	var roots = jQuery();
+
 	// widgets to be layouted
 	var widgets = jQuery();
 
@@ -92,19 +95,16 @@
 
 	// static local function
 	// call function on all widgets
-	function exec(fn, data)
+	function exec(fn, data, widgets)
 	{
 
-		// loop all widgets reversed
-		var i = widgets.length; while (i--)
+		// loop all widgets in order of registration
+		for(var i = 0, l = widgets.length; i < l; i++)
 		{
 
-			// get local variables
-			var widget = widgets[i];
-			var method = widget[fn];
-
-			// call the method in context of the widget
-			if (jQuery.isFunction(method)) method.call(widget, data);
+			// call method in widget context
+			if (jQuery.isFunction(widgets[i][fn]))
+			{ widgets[i][fn].call(widgets[i], data); }
 
 		}
 
@@ -113,16 +113,55 @@
 
 
 	// static local function
-	// call layout hooks on all widgets
-	function layout (data)
+	// call function on all widgets
+	function layout(data, widgets)
 	{
 
-		exec('preLayout', data);
-		exec('updateLayout', data);
-		exec('postLayout', data);
+		// first call pre on all widgets
+		exec('preLayout', data, widgets);
+
+		// loop all widgets in order of registration
+		for(var i = 0, l = widgets.length; i < l; i++)
+		{
+
+			// get childrens for widget from options
+			var children = widgets[i].layout.children;
+
+			// call layout for all childrens
+			if (children && children.length)
+			{ layout(data, children); }
+
+		}
+
+		// then call update on all widgets
+		exec('postLayout', data, widgets);
 
 	}
 	// EO layout
+
+	// static local function
+	// call function on all widgets
+	function finalize(data, widgets)
+	{
+
+		// first call post on all widgets
+		exec('updateLayout', data, widgets);
+
+		// loop all widgets in order of registration
+		for(var i = 0, l = widgets.length; i < l; i++)
+		{
+
+			// get childrens for widget from options
+			var children = widgets[i].layout.children;
+
+			// call finalize for all childrens
+			if (children && children.length)
+			{ finalize(data, children); }
+
+		}
+
+	}
+	// EO finalize
 
 
 	// static global function
@@ -143,7 +182,7 @@
 		var body_1st_y = win.innerHeight();
 
 		// reflow layout
-		layout(data);
+		layout(data, roots);
 
 		// get the dimensions afterwards
 		var body_2nd_x = win.innerWidth();
@@ -154,7 +193,7 @@
 		{
 
 			// reflow layout
-			layout(data);
+			layout(data, roots);
 
 			// get the dimensions afterwards
 			var body_3rd_x = win.innerWidth();
@@ -185,13 +224,16 @@
 				}
 
 				// reflow layout
-				layout(data);
+				layout(data, roots);
 
 			}
 			// EO if 2nd changed
 
 		}
 		// EO if 1st changed
+
+		// execute last (only once)
+		finalize(data, roots);
 
 	};
 	// EO Manager
@@ -254,6 +296,20 @@
 		// assign the body object only once
 		if (!body) body = jQuery('BODY:first');
 
+		// extend/initialize layout options property
+		widget.layout = jQuery.extend({ children: [] }, widget.layout)
+
+		// check if widget has a parent with children
+		// add ourself to our parent's children array
+		if (widget.layout && widget.layout.parent)
+		{
+			if (!widget.layout.parent.layout.children)
+			{ widget.layout.parent.layout.children = []; }
+			widget.layout.parent.layout.children.push(widget);
+		}
+		// otherwise it's a root widget without parent
+		else { roots = roots.add(jQuery(widget)); }
+
 		// jQueryfy input argument
 		widget = jQuery(widget);
 
@@ -262,7 +318,7 @@
 		{ jQuery(window).bind('resize', resizer); }
 
 		// push instances to static array
-		widgets = widgets.add(jQuery(widget))
+		widgets = widgets.add(widget)
 
 		// make static array a global
 		// Manager.widgets = widgets;

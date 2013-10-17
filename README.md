@@ -54,10 +54,10 @@ widget to the manager you simply have to add it via OCBNET.Layout.add(widget).
 ### What is a widget?
 
 The widgets you register can be associative arrays or objects. To work with the Layout Manager
-these objects need to have preLayout, updateLayout and postLayout set to functions. The Manager will
+these objects need to have preLayout, postLayout and updateLayout set to functions. The Manager will
 always call them in the context of the widget. For the widget this will look like a regular method
-call. On preLayout you should read all values / dimensions and on updateLayout you can adjust widget
-elements.
+call. On preLayout you should read all values / dimensions and on postLayout you can adjust widget
+elements. On updateLayout you then may adjust inner elements (like centering stuff).
 
 ### Utility Functions
 
@@ -89,14 +89,15 @@ The force flag will also be present on this data object (data.force).
 
 <pre>{ 'preLayout' : function (data) { var widget = this; if (data.force) {} } }</pre>
 
-Read and store the values needed to redo the layout (do not adjust browser elements).
-
-<pre>{ 'updateLayout' : function (data) { var widget = this; if (data.force) {} } }</pre>
-
-Use stored values to redo the layout (do not measure any browser elements). In this step
-you may only adjust the viewport that will influence the outside page.
+Read and store the values needed to redo the layout (do not adjust any browser elements).
 
 <pre>{ 'postLayout' : function (data) { var widget = this; if (data.force) {} } }</pre>
+
+Use stored values to calculate the layout (do not measure any browser elements). In this
+step you may only adjust the viewport that will influence the outside page. Use updateLayout
+to do more expensive adjustements (read below).
+
+<pre>{ 'updateLayout' : function (data) { var widget = this; if (data.force) {} } }</pre>
 
 Do adjustements that will not alter the outside dimensions of the widget here. The other
 events are called up to three times per layout run. This callback will only be executed
