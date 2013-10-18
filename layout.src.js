@@ -92,6 +92,9 @@
 	if (!callDefered) callDefered = window.setTimeout;
 	if (!clearDefered) clearDefered = window.clearTimeout;
 
+	// remember default functions
+	var defCallDefered = callDefered;
+	var defClearDefered = clearDefered;
 
 	// static local function
 	// call function on all widgets
@@ -248,6 +251,14 @@
 		{
 			case 'fps': fps = value; break;
 			case 'vsync': vsync = value; break;
+			case 'default':
+				callDefered = defCallDefered;
+				clearDefered = defClearDefered;
+			break;
+			case 'fallback':
+				callDefered = window.setTimeout;
+				clearDefered = window.clearTimeout;
+			break;
 		}
 
 		// reassign the resizer function
@@ -286,6 +297,26 @@
 
 	}
 	// EO Manager.schedule
+
+
+	// EO Manager.defer
+	Manager.defer = function (fn, delay)
+	{
+		// delay is optional
+		if (typeof delay == 'undefined')
+		{ delay = 1000 / fps; }
+		// add scheduled function
+		return callDefered(fn, delay);
+	}
+	// EO Manager.defer
+
+	// EO Manager.undefer
+	Manager.undefer = function (scheduled)
+	{
+		// clear scheduled function
+		return clearDefered(scheduled);
+	}
+	// EO Manager.undefer
 
 
 	// static global function
