@@ -75,18 +75,21 @@
 	// use requestAnimationFrame to defer functions
 	// this seems to work quite well, so include it
 	var setDefered = window.requestAnimationFrame,
-	    clearDefered = window.cancelRequestAnimationFrame;
+	    clearDefered = window.cancelAnimationFrame ||
+	                   window.cancelRequestAnimationFrame;
+
 	// search for requestAnimationFrame by vendor
 	var vendors = ['ms', 'moz', 'webkit', 'o'];
 	// loop vendors until the request animation frame function is found
 	for(var x = 0; x < vendors.length && !setDefered; ++x)
 	{
 		setDefered = window[vendors[x]+'RequestAnimationFrame'];
-		clearDefered = window[vendors[x]+'CancelRequestAnimationFrame'];
+		clearDefered = window[vendors[x]+'CancelAnimationFrame'] ||
+		               window[vendors[x]+'CancelRequestAnimationFrame'];
 	}
 
-	// create function to take out delay argument
-	if (setDefered) var callDefered = function (cb) { setDefered(cb); };
+	// create function to take out delay argument (returns identifier)
+	if (setDefered) var callDefered = function (cb) { return setDefered(cb); };
 
 	// use timeouts as a fallback
 	if (!callDefered) callDefered = window.setTimeout;
