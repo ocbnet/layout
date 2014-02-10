@@ -356,6 +356,7 @@
 
 		// make static array a global
 		// Manager.widgets = widgets;
+		// Manager.roots = roots;
 
 	};
 	// EO Manager.add
@@ -369,14 +370,16 @@
 		// jQueryfy input argument
 		widget = jQuery(widget);
 
-		// remove instances from static array
+		// remove from static arrays
 		widgets = widgets.not(widget)
+		roots = roots.not(widget);
 
 		// remove the resize handler when there are no widgets left
 		if (widgets.length == 0) jQuery(window).unbind('resize', resizer);
 
 		// make static array a global
 		// Manager.widgets = widgets;
+		// Manager.roots = roots;
 
 	};
 	// EO Manager.del
