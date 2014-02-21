@@ -172,11 +172,14 @@
 
 	// static global function
 	// do the layout on all widgets
-	function Manager (force)
+	function Manager (force, widgets)
 	{
 
 		// shared data (assign flag)
 		var data = { force: force };
+
+		// get nodes to manage in this run
+		var nodes = widgets ? jQuery(widgets) : roots;
 
 		// restore the previous overflow style on the document body
 		// needed so our layout can trigger the scrollbar to appear/disapear
@@ -188,7 +191,7 @@
 		var body_1st_y = win.innerHeight();
 
 		// reflow layout
-		layout(data, roots);
+		layout(data, nodes);
 
 		// get the dimensions afterwards
 		var body_2nd_x = win.innerWidth();
@@ -199,7 +202,7 @@
 		{
 
 			// reflow layout
-			layout(data, roots);
+			layout(data, nodes);
 
 			// get the dimensions afterwards
 			var body_3rd_x = win.innerWidth();
@@ -230,7 +233,7 @@
 				}
 
 				// reflow layout
-				layout(data, roots);
+				layout(data, nodes);
 
 			}
 			// EO if 2nd changed
@@ -239,7 +242,7 @@
 		// EO if 1st changed
 
 		// execute last (only once)
-		finalize(data, roots);
+		finalize(data, nodes);
 
 	};
 	// EO Manager
