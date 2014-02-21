@@ -344,6 +344,10 @@
 		// otherwise it's a root widget without parent
 		else { roots = roots.add(jQuery(widget)); }
 
+		// call start layout hook on widget
+		if (jQuery.isFunction(widget.startLayout))
+		{ widget.startLayout.call(widget); }
+
 		// jQueryfy input argument
 		widget = jQuery(widget);
 
@@ -366,6 +370,10 @@
 	// add a widget under our control
 	Manager.del = function (widget)
 	{
+
+		// call stop layout hook on widget
+		if (jQuery.isFunction(widget.stopLayout))
+		{ widget.stopLayout.call(widget); }
 
 		// jQueryfy input argument
 		widget = jQuery(widget);
