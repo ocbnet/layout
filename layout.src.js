@@ -51,9 +51,9 @@
 	var ua = navigator.userAgent.toLowerCase();
 
 	// only match for ie and mozilla so far
-	var match = // /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
-	            // /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
-	            // /(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
+	var match = /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
+	            /(webkit)[ \/]([\w.]+)/.exec( ua ) ||
+	            /(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
 	            /(msie) ([\w.]+)/.exec( ua ) ||
 	            ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
 	            [];
@@ -199,6 +199,7 @@
 		var body_2nd_x = win.innerWidth();
 		var body_2nd_y = win.innerHeight();
 
+		// check if layout triggered any scrollbar changes
 		if (body_1st_x != body_2nd_x || body_1st_y != body_2nd_y)
 		// if (body_1st_x > body_2nd_x || body_1st_y > body_2nd_y)
 		{
@@ -259,6 +260,11 @@
 	};
 	// EO Manager
 
+	// expose ua info
+	Manager.ua = {
+		'browser': browser,
+		'version': version
+	};
 
 	// static global function
 	Manager.config = function (key, value)
