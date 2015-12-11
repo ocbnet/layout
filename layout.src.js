@@ -150,6 +150,8 @@
 	function finalize(data, widgets)
 	{
 
+		Manager.initialized = true;
+
 		// first call post on all widgets
 		exec('updateLayout', data, widgets);
 
@@ -212,28 +214,38 @@
 			// if (body_2nd_x < body_3rd_x || body_2nd_y < body_3rd_y)
 			{
 
-				// check if we should force the horizontal scrollbar
-				if (firefox_overflow || body_2nd_y != body_3rd_y)
+				// helper function (dry)
+				function resetBodyScrollbars()
 				{
-					// store previous scollbar setting
-					overflow_x = body.css('overflow-x');
-					// reset to scroll if not hidden
-					if (overflow_x != 'hidden')
-					{ body.css('overflow-x', 'scroll'); }
+					// check if we should force the horizontal scrollbar
+					if (firefox_overflow || body_2nd_y != body_3rd_y)
+					{
+						// store previous scollbar setting
+						overflow_x = body.css('overflow-x');
+						// reset to scroll if not hidden
+						if (overflow_x != 'hidden')
+						{ body.css('overflow-x', 'scroll'); }
+					}
+
+					// check if we should force the vertical scrollbar
+					if (firefox_overflow || body_2nd_x != body_3rd_x)
+					{
+						// store previous scollbar setting
+						overflow_y = body.css('overflow-y');
+						// reset to scroll if not hidden
+						if (overflow_y != 'hidden')
+						{ body.css('overflow-y', 'scroll'); }
+					}
 				}
 
-				// check if we should force the vertical scrollbar
-				if (firefox_overflow || body_2nd_x != body_3rd_x)
-				{
-					// store previous scollbar setting
-					overflow_y = body.css('overflow-y');
-					// reset to scroll if not hidden
-					if (overflow_y != 'hidden')
-					{ body.css('overflow-y', 'scroll'); }
-				}
+				// reset to scrollbars if not hidden
+				if (Manager.initialized) resetBodyScrollbars();
 
 				// reflow layout
 				layout(data, nodes);
+
+				// reset to scrollbars if not hidden
+				if (!Manager.initialized) resetBodyScrollbars();
 
 			}
 			// EO if 2nd changed
@@ -444,7 +456,7 @@
 
 	// make sure our global namespace exists
 	// but do not reset it if already present
-	if (typeof OCBNET == 'undefined') OCBNET = {};
+	if (typeof OCBNET == 'undefined') window.OCBNET = {};
 
 	// assign class to global namespace
 	OCBNET.Layout = Manager;
