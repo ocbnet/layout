@@ -108,6 +108,9 @@
 		for(var i = 0, l = widgets.length; i < l; i++)
 		{
 
+			// skip any disabled widgets
+			if (widgets[i].disabled) continue;
+
 			// call method in widget context
 			if (jQuery.isFunction(widgets[i][fn]))
 			{ widgets[i][fn].call(widgets[i], data); }
@@ -129,6 +132,9 @@
 		// loop all widgets in order of registration
 		for(var i = 0, l = widgets.length; i < l; i++)
 		{
+
+			// skip any disabled widgets
+			if (widgets[i].disabled) continue;
 
 			// get childrens for widget from options
 			var children = widgets[i].layout.children;
@@ -158,6 +164,9 @@
 		// loop all widgets in order of registration
 		for(var i = 0, l = widgets.length; i < l; i++)
 		{
+
+			// skip any disabled widgets
+			if (widgets[i].disabled) continue;
 
 			// get childrens for widget from options
 			var children = widgets[i].layout.children;
