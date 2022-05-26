@@ -43,7 +43,7 @@
 	var widgets = jQuery();
 
 	// old body overflow style
-	var overflow_x, overflow_y;
+	var overflow, overflow_x, overflow_y;
 
 	// get the user agent string in lowercase
 	// copy feature from jquery migrate plugin
@@ -71,6 +71,9 @@
 	// does not 'fit' perfectly. All other browsers will
 	// only show the scrollbar in the direction needed.
 	var firefox_overflow = browser == 'mozilla';
+
+	// Firefox regressed at some point to this
+	var use_overflow_only = firefox_overflow;
 
 	// use requestAnimationFrame to defer functions
 	// this seems to work quite well, so include it
@@ -194,8 +197,14 @@
 
 		// restore the previous overflow style on the document body
 		// needed so our layout can trigger the scrollbar to appear/disapear
-		if (overflow_y) { body.css('overflow-y', overflow_y); overflow_y = null; }
-		if (overflow_x) { body.css('overflow-x', overflow_x); overflow_x = null; }
+		if (use_overflow_only)
+		{
+			if (overflow) { body.css('overflow', overflow); overflow = null; }
+		}
+		else {
+			if (overflow_y) { body.css('overflow-y', overflow_y); overflow_y = null; }
+			if (overflow_x) { body.css('overflow-x', overflow_x); overflow_x = null; }
+		}
 
 		// get the initial dimensions
 		var body_1st_x = win.innerWidth();
@@ -225,26 +234,40 @@
 			{
 
 				// helper function (dry)
-				function resetBodyScrollbars()
+				var resetBodyScrollbars = function ()
 				{
-					// check if we should force the horizontal scrollbar
-					if (firefox_overflow || body_2nd_y != body_3rd_y)
+					if (use_overflow_only)
 					{
-						// store previous scollbar setting
-						overflow_x = body.css('overflow-x');
-						// reset to scroll if not hidden
-						if (overflow_x != 'hidden')
-						{ body.css('overflow-x', 'scroll'); }
+						// check if we should force the horizontal scrollbar
+						if (firefox_overflow || body_2nd_y != body_3rd_y || body_2nd_x != body_3rd_x)
+						{
+							// store previous scollbar setting
+							overflow = body.css('overflow');
+							// reset to scroll if not hidden
+							if (overflow != 'hidden')
+							{ body.css('overflow', 'scroll'); }
+						}
 					}
-
-					// check if we should force the vertical scrollbar
-					if (firefox_overflow || body_2nd_x != body_3rd_x)
+					else
 					{
-						// store previous scollbar setting
-						overflow_y = body.css('overflow-y');
-						// reset to scroll if not hidden
-						if (overflow_y != 'hidden')
-						{ body.css('overflow-y', 'scroll'); }
+						// check if we should force the horizontal scrollbar
+						if (firefox_overflow || body_2nd_y != body_3rd_y)
+						{
+							// store previous scollbar setting
+							overflow_x = body.css('overflow-x');
+							// reset to scroll if not hidden
+							if (overflow_x != 'hidden')
+							{ body.css('overflow-x', 'scroll'); }
+						}
+						// check if we should force the vertical scrollbar
+						if (firefox_overflow || body_2nd_x != body_3rd_x)
+						{
+							// store previous scollbar setting
+							overflow_y = body.css('overflow-y');
+							// reset to scroll if not hidden
+							if (overflow_y != 'hidden')
+							{ body.css('overflow-y', 'scroll'); }
+						}
 					}
 				}
 
